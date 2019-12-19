@@ -29,9 +29,12 @@ kubectl apply -f bitbox.yaml
 kubectl get pods -A
 minikube service bitbox-http --namespace bitbox
 ```
+
 *(the last command could change, depending on your hosting platform)*
 
 **Customization:**
+
+Login password can be set with `VNC_PASS` env variable. (default: satoshi) However, in the future login will be done through bitkey/moneybutton integration.
 
 Try changing the `BITCOM` environment variable in the `charts/bitwork.yaml`to your own. You can also unset it alltogether to get the full mempool stream. 
 
