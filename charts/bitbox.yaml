@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bitbox
+  namespace: bitbox
+spec:
+  selector:
+    matchLabels:
+      app: bitbox
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: bitbox
+    spec:
+      volumes:
+      - name: bitmount
+        hostPath:
+          path: /mnt
+          type: Directory
+      containers: 
+      - name: bitbox
+        image: gwolf3/bitbox:0.0.3
+        env:
+        - name: BITCOM
+          value: '19HxigV4QyBv3tHpQVcUEQyq1pzZVdoAut'
+        ports:
+        - containerPort: 6901
+          name: http
+        volumeMounts:
+        - name: bitmount 
+          mountPath: /mnt
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: bitbox-http
+  namespace: bitbox
+spec:
+  selector:
+    app: bitbox
+  ports:
+  - protocol: TCP
+    targetPort: 6901
+    port: 8080
+    name: http
+  type: LoadBalancer
